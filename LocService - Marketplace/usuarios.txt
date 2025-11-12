@@ -1,0 +1,9 @@
+admin,admin@locservice.com,admin123
+Jardins & Cia,jardins@locservice.com,jardim123
+Limpa Tudo,limpatudo@locservice.com,limpa123
+ReparaBem,reparabem@locservice.com,repara123
+Consertar+,consertarmais@locservice.com,consertar123
+Pão da Vila,paodavila@locservice.com,pao123
+PetCare,petcare@locservice.com,pet123
+Fitness Point,fitness@locservice.com,fit123
+TechCondo,techcondo@locservice.com,tech123

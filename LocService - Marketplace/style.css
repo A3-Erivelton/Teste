@@ -1,0 +1,514 @@
+/* ============================================================
+   style.css — Estilo global do site Loc Service
+   ============================================================ */
+
+/* ---------- VARIÁVEIS DE TEMA ---------- */
+:root {
+  --bg: #0c1022; /* Cor principal do fundo (tom escuro azulado) */
+  --bg-2: #0e1535; /* Segunda cor para gradientes */
+  --card: rgba(255, 255, 255, .08); /* Fundo translúcido dos cards e containers */
+  --stroke: rgba(0, 255, 229, .45); /* Cor de bordas e brilhos (neon) */
+  --text: #eaf4ff; /* Cor principal do texto */
+  --muted: #b7c1da; /* Cor de texto secundário */
+  --neon: #00ffe5; /* Cor de destaque neon (verde água) */
+  --accent: #9cff57; /* Cor de destaque secundária (verde-lima) */
+  --wa: #25d366; /* Cor oficial do WhatsApp */
+  --radius: 20px; /* Raio padrão de bordas arredondadas */
+  --shadow: 0 10px 30px rgba(0, 0, 0, .45); /* Sombra padrão para elementos */
+}
+
+/* ---------- RESET GLOBAL ---------- */
+* {
+  box-sizing: border-box; /* Inclui padding e borda dentro da largura total */
+  margin: 0; /* Remove margens padrão */
+  padding: 0; /* Remove espaçamentos padrão */
+}
+
+html {
+  scroll-behavior: smooth; /* Faz rolagem suave ao clicar em links âncora */
+}
+
+body {
+  font-family: "Poppins", "Montserrat", system-ui, Segoe UI, Roboto, Arial, sans-serif; /* Define fontes modernas */
+  background: radial-gradient(1200px 800px at 15% -10%, #152158 0%, var(--bg) 40%) fixed; /* Fundo com gradiente radial fixo */
+  color: var(--text); /* Cor padrão do texto */
+  line-height: 1.6; /* Espaçamento entre linhas */
+  min-height: 100dvh; /* Altura mínima: 100% da altura da viewport */
+}
+
+/* ---------- CONTAINERS E ESTRUTURA ---------- */
+.container {
+  width: min(1200px, 92%); /* Largura máxima de 1200px ou 92% da tela */
+  margin-inline: auto; /* Centraliza horizontalmente */
+}
+
+.section {
+  padding: 64px 0; /* Espaçamento superior e inferior das seções */
+}
+
+.row {
+  display: flex; /* Layout em linha flexível */
+  align-items: center; /* Alinha itens verticalmente ao centro */
+  justify-content: space-between; /* Espaça elementos igualmente */
+  gap: 16px; /* Espaçamento entre os itens */
+}
+
+/* ---------- GRID SYSTEM ---------- */
+.grid-3 {
+  display: grid; /* Ativa o modelo de grade */
+  grid-template-columns: repeat(3, 1fr); /* Cria 3 colunas de tamanhos iguais */
+  gap: 24px; /* Espaçamento entre as colunas */
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Cria 4 colunas iguais */
+  gap: 24px;
+}
+
+/* ---------- RESPONSIVIDADE ---------- */
+@media (max-width: 1024px) {
+  .grid-4 {
+    grid-template-columns: repeat(2, 1fr); /* Reduz para duas colunas em tablets */
+  }
+}
+
+@media (max-width: 640px) {
+  .grid-3,
+  .grid-4 {
+    grid-template-columns: 1fr; /* Uma coluna em dispositivos móveis */
+  }
+}
+
+/* ---------- EFEITOS DE FUNDO ---------- */
+.bg {
+  position: fixed; /* Mantém o fundo fixo ao rolar */
+  inset: 0; /* Ocupa toda a tela */
+  z-index: -1; /* Fica atrás de todo o conteúdo */
+  background:
+    linear-gradient(120deg, transparent 0 35%, rgba(0, 255, 229, .07) 35% 70%, transparent 70%), /* Faixa diagonal suave */
+    radial-gradient(1000px 500px at 90% 30%, rgba(156, 255, 87, .08), transparent 60%); /* Luz difusa */
+}
+
+.fx-lights::after {
+  content: ""; /* Elemento extra para criar brilho */
+  position: absolute;
+  inset: -40% -40% auto auto; /* Posiciona o brilho no canto */
+  width: 80vmax; /* Tamanho proporcional à viewport */
+  height: 80vmax;
+  background: radial-gradient(closest-side, rgba(0, 255, 229, .12), transparent); /* Gradiente circular de luz */
+  filter: blur(60px); /* Suaviza o brilho */
+}
+
+/* ============================================================
+   TOPO (NAVBAR)
+============================================================ */
+.topbar {
+  position: sticky; /* Fixa o topo ao rolar */
+  top: 0;
+  backdrop-filter: blur(10px); /* Efeito vidro fosco */
+  border-bottom: 1px solid rgba(255, 255, 255, .08); /* Linha sutil inferior */
+  z-index: 20; /* Mantém sobre o conteúdo */
+}
+
+.topbar .row {
+  padding: 14px 0; /* Espaçamento interno */
+}
+
+.brand {
+  display: flex; /* Alinha logo e nome lado a lado */
+  align-items: center;
+  gap: 10px;
+  text-decoration: none; /* Remove sublinhado */
+  color: var(--text);
+}
+
+.brand__logo {
+  width: 40px; /* Tamanho da logomarca */
+  height: 40px;
+  border-radius: 12px; /* Bordas arredondadas */
+  box-shadow: 0 0 0 1px var(--stroke), var(--shadow); /* Brilho neon suave */
+}
+
+.brand__name {
+  font-weight: 700; /* Texto em negrito */
+  letter-spacing: .3px; /* Espaçamento entre letras */
+}
+
+/* ---------- MENU DE NAVEGAÇÃO ---------- */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 14px; /* Espaçamento entre os links */
+}
+
+.nav a {
+  color: var(--text);
+  text-decoration: none; /* Remove sublinhado dos links */
+  padding: 10px 14px; /* Área clicável */
+  border-radius: 12px; /* Bordas arredondadas */
+}
+
+.nav a:hover {
+  background: rgba(255, 255, 255, .06); /* Fundo suave ao passar o mouse */
+}
+
+/* ---------- BOTÕES ---------- */
+.btn {
+  display: inline-flex; /* Mantém o conteúdo centralizado */
+  align-items: center;
+  justify-content: center;
+  padding: 12px 18px; /* Espaçamento interno */
+  border-radius: 16px; /* Bordas arredondadas */
+  text-decoration: none; /* Remove sublinhado */
+}
+
+/* Botão transparente com borda neon */
+.btn-ghost {
+  border: 1px solid var(--neon); /* Borda neon */
+  color: var(--neon); /* Texto neon */
+  background: transparent; /* Fundo transparente */
+  transition: all .25s ease; /* Transição suave em hover */
+}
+
+.btn-ghost:hover {
+  background: rgba(0, 255, 229, .08); /* Fundo translúcido ao passar o mouse */
+  box-shadow: 0 0 12px rgba(0, 255, 229, .5); /* Efeito de brilho neon */
+}
+
+/* Botão sólido com gradiente neon */
+.btn-neon {
+  background: linear-gradient(90deg, var(--neon), #38f8c2); /* Gradiente de duas cores neon */
+  color: #06101b; /* Texto escuro para contraste */
+  font-weight: 700; /* Negrito */
+  box-shadow: 0 0 0 1px var(--stroke), 0 10px 25px rgba(0, 255, 229, .25); /* Borda + sombra */
+}
+
+.btn-neon:hover {
+  transform: translateY(-2px); /* Sobe levemente */
+  filter: saturate(1.2); /* Intensifica as cores */
+}
+
+/* ---------- MENU MOBILE ---------- */
+.nav-toggle {
+  display: none; /* Esconde no desktop */
+  background: none;
+  border: 0;
+  cursor: pointer; /* Cursor de botão */
+}
+
+.nav-toggle__bar {
+  display: block;
+  width: 26px;
+  height: 2px;
+  background: #dff; /* Barras brancas do “hamburger” */
+  box-shadow: 0 8px 0 #dff, 0 -8px 0 #dff; /* Cria três linhas */
+}
+
+/* ---------- ANIMAÇÃO DO MENU RESPONSIVO ---------- */
+@media (max-width: 860px) {
+  .nav {
+    position: absolute; /* Sai do fluxo normal */
+    right: 16px; /* Encosta no canto direito */
+    top: 64px; /* Abaixo da barra superior */
+    flex-direction: column; /* Coloca links em coluna */
+    background: rgba(10, 14, 34, .9); /* Fundo escuro translúcido */
+    padding: 12px; /* Espaçamento interno */
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    opacity: 0; /* Invisível por padrão */
+    transform: translateY(-10px);
+    pointer-events: none; /* Inativo por padrão */
+    transition: .25s; /* Transição suave */
+  }
+
+  .nav.is-open {
+    opacity: 1; /* Visível quando ativo */
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .nav-toggle {
+    display: block; /* Mostra o botão de menu */
+  }
+}
+
+/* ============================================================
+   SEÇÃO HERO (DESTAQUE PRINCIPAL)
+============================================================ */
+.hero {
+  display: grid;
+  grid-template-columns: 1.2fr .8fr; /* Duas colunas (texto e imagem) */
+  gap: 28px;
+  align-items: center;
+  padding: 32px 0;
+}
+
+@media (max-width: 1024px) {
+  .hero {
+    grid-template-columns: 1fr; /* Coluna única no mobile */
+  }
+}
+
+.hero__content {
+  padding: 28px; /* Espaçamento interno do conteúdo */
+}
+
+/* Fundo estilo vidro */
+.glass {
+  background: var(--card);
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(8px);
+}
+
+.title {
+  font-size: clamp(28px, 4vw, 44px); /* Tamanho responsivo */
+  line-height: 1.15;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: clamp(22px, 3vw, 32px);
+  margin-bottom: 16px;
+}
+
+.lead {
+  color: var(--muted);
+  font-size: clamp(16px, 2vw, 18px);
+}
+
+.hero__cta {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.badges {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap; /* Quebra linhas no mobile */
+  color: #d7e8ff;
+  font-size: 14px;
+}
+
+.hero__art img {
+  width: 100%;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, .12);
+  box-shadow: var(--shadow);
+}
+
+/* ============================================================
+   CARDS (EMPRESAS)
+============================================================ */
+.card {
+  padding: 22px;
+  border-radius: 18px;
+  background: var(--card);
+  border: 1px solid rgba(255, 255, 255, .12);
+  box-shadow: var(--shadow);
+  transition: transform .25s, box-shadow .25s;
+}
+
+.card:hover {
+  transform: translateY(-4px); /* Efeito de elevação */
+  box-shadow: 0 16px 40px rgba(0, 0, 0, .55);
+}
+
+.cards .card img {
+  width: 100%;
+  height: 140px;
+  object-fit: contain;
+  display: block;
+  border-radius: 14px;
+  margin-bottom: 10px;
+  background: rgba(255, 255, 255, .06);
+}
+
+.card.company h3 {
+  margin: 6px 0 2px;
+}
+
+.card.company p {
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.about p {
+  color: #dfe8ff;
+}
+
+/* ============================================================
+   RODAPÉ
+============================================================ */
+.footer {
+  border-top: 1px solid rgba(255, 255, 255, .08);
+  padding: 18px 0;
+  color: var(--muted);
+}
+
+.footer .social a {
+  color: var(--muted);
+  text-decoration: none;
+  margin-left: 12px;
+}
+
+.footer .social a:hover {
+  color: #fff; /* Clareia ao passar o mouse */
+}
+
+/* ============================================================
+   BOTÃO FLUTUANTE DO WHATSAPP
+============================================================ */
+.whatsapp-float {
+  position: fixed; /* Fixa no canto da tela */
+  right: 18px;
+  bottom: 18px;
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center; /* Centraliza o ícone */
+  border-radius: 50%;
+  background: var(--wa); /* Verde do WhatsApp */
+  box-shadow: 0 10px 25px rgba(37, 211, 102, .45);
+  z-index: 50; /* Sempre no topo */
+}
+
+.whatsapp-float img {
+  width: 28px;
+  height: 28px;
+  filter: invert(1); /* Deixa o ícone branco */
+}
+
+.whatsapp-float:hover {
+  transform: translateY(-2px); /* Sobe levemente ao hover */
+}
+
+/* ============================================================
+   UTILITÁRIOS DE BRILHO / GLOW
+============================================================ */
+.glow {
+  text-shadow: 0 0 18px rgba(0, 255, 229, .35); /* Brilho neon em textos */
+}
+
+/* ============================================================
+   MENU DE USUÁRIO (SISTEMA DE LOGIN)
+   ============================================================ */
+
+.menu-usuario-container {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 2000;
+}
+
+.bolinha-usuario {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--neon) 0%, #38f8c2 100%);
+  color: #06101b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 0 0 2px var(--stroke), 0 8px 20px rgba(0, 255, 229, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+.bolinha-usuario:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 0 2px var(--neon), 0 12px 30px rgba(0, 255, 229, 0.5);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  background: var(--bg-2);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px var(--stroke);
+  min-width: 260px;
+  display: none;
+  overflow: hidden;
+}
+
+.dropdown-menu.show {
+  display: block;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-header {
+  padding: 16px;
+  background: linear-gradient(135deg, var(--neon) 0%, #38f8c2 100%);
+  color: #06101b;
+}
+
+.dropdown-header strong {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 4px;
+  font-weight: 700;
+}
+
+.dropdown-header small {
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 12px 16px;
+  color: var(--text);
+  text-decoration: none;
+  transition: background 0.2s;
+  font-size: 14px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.dropdown-menu a:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.dropdown-menu hr {
+  margin: 0;
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 768px) {
+  .menu-usuario-container {
+    right: 16px;
+    top: 16px;
+  }
+  
+  .bolinha-usuario {
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
+  }
+}
