@@ -1,4 +1,4 @@
-// script.js — interações globais + sistema de login
+// script.js — interações globais + sistema de login com API
 
 const $ = (s) => document.querySelector(s);
 
@@ -42,7 +42,7 @@ style.textContent = `.in{opacity:1!important;transform:none!important;transition
 document.head.appendChild(style);
 
 // ============================================================
-// SISTEMA DE LOGIN
+// SISTEMA DE LOGIN COM API
 // ============================================================
 
 // Verifica se está na página de login
@@ -66,41 +66,40 @@ if (window.location.pathname.includes("login")) {
   }
 }
 
-// Função de login com usuarios.txt
-function fazerLogin(email, senha) {
-  fetch('usuarios.txt')
-  .then(response => response.text())
-  .then(conteudo => {
-    const linhas = conteudo.split('\n');
-    let encontrado = false;
-    let nomeUsuario = '';
+// ⭐ NOVA FUNÇÃO - Função de login usando API
+async function fazerLogin(email, senha) {
+  try {
+    console.log('🔐 Tentando login via API...');
     
-    for (let i = 0; i < linhas.length; i++) {
-      const linha = linhas[i].trim();
-      if (linha === '') continue;
+    const response = await fetch('http://localhost:3000/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email, senha })
+    });
+
+    console.log('📡 Resposta recebida:', response.status);
+
+    const data = await response.json();
+    console.log('📦 Dados:', data);
+
+    if (data.success) {
+      localStorage.setItem('token', data.data.token);
+      localStorage.setItem('usuarioLogado', data.data.usuario.nome);
+      localStorage.setItem('emailLogado', data.data.usuario.email);
+      // ⭐ Converte para string 'true' ou 'false'
+      localStorage.setItem('isAdmin', data.data.usuario.isAdmin ? 'true' : 'false');
       
-      const dados = linha.split(',');
-      const nome = dados[0];
-      const emailArquivo = dados[1];
-      const senhaArquivo = dados[2];
-      
-      if (emailArquivo === email && senhaArquivo === senha) {
-        encontrado = true;
-        nomeUsuario = nome;
-        break;
-      }
-    }
-    
-    if (encontrado) {
-      alert('Bem-vindo, ' + nomeUsuario + '!');
-      sessionStorage.setItem('usuarioLogado', nomeUsuario);
-      sessionStorage.setItem('emailLogado', email);
+      alert(data.message);
       window.location.href = 'index.html';
     } else {
-      alert('Email ou senha incorretos!');
+      alert(data.message || 'Email ou senha incorretos!');
     }
-  })
-  .catch(() => alert('Erro ao carregar dados de login. Certifique-se que o arquivo usuarios.txt existe.'));
+  } catch (error) {
+    console.error('❌ Erro ao conectar:', error);
+    alert('Erro ao conectar com o servidor!\n\nVerifique se:\n✅ O backend está rodando (npm run dev)\n✅ Está acessando via http://localhost ou http://127.0.0.1');
+  }
 }
 
 // Verifica se está na página index
@@ -108,10 +107,15 @@ if (window.location.pathname.includes("index") || window.location.pathname === '
   verificarUsuarioLogado();
 }
 
-// Verifica se usuário está logado
+// ⭐ ATUALIZADA - Verifica se usuário está logado
 function verificarUsuarioLogado() {
-  const usuarioLogado = sessionStorage.getItem('usuarioLogado');
-  const emailLogado = sessionStorage.getItem('emailLogado');
+  const usuarioLogado = localStorage.getItem('usuarioLogado');
+  const emailLogado = localStorage.getItem('emailLogado');
+  // ⭐ Aceita 'true', '1', ou boolean true
+  const isAdminValue = localStorage.getItem('isAdmin');
+  const isAdmin = isAdminValue === 'true' || isAdminValue === '1' || isAdminValue === true;
+  
+  console.log('🔍 Debug isAdmin:', isAdminValue, '→', isAdmin); // Para debug
   
   if (usuarioLogado) {
     const btnLogin = document.getElementById('btnLogin');
@@ -120,7 +124,6 @@ function verificarUsuarioLogado() {
     if (btnLogin) btnLogin.style.display = 'none';
     if (btnCadastro) btnCadastro.style.display = 'none';
     
-    const isAdmin = (emailLogado === 'admin@locservice.com');
     criarMenuUsuario(usuarioLogado, emailLogado, isAdmin);
   }
 }
@@ -225,12 +228,16 @@ function gerenciarUsuarios() {
   alert('Funcionalidade: Gerenciar Usuários (em desenvolvimento)');
 }
 
-// ===== LOGOUT =====
-
+// ⭐ ATUALIZADA - LOGOUT
 function fazerLogout() {
   if (confirm('Deseja realmente sair?')) {
-    sessionStorage.clear();
+    // ⭐ MUDANÇA: Limpa localStorage (não sessionStorage)
+    localStorage.removeItem('token');
+    localStorage.removeItem('usuarioLogado');
+    localStorage.removeItem('emailLogado');
+    localStorage.removeItem('isAdmin');
+    
     alert('Logout realizado com sucesso!');
-    window.location.reload();
+    window.location.href = 'login.html';
   }
 }

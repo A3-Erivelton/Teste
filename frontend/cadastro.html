@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro - LocService</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .cadastro-container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 500px;
+      padding: 40px;
+      animation: slideUp 0.5s ease;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .cadastro-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .cadastro-header h1 {
+      font-size: 28px;
+      color: #333;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .cadastro-header p {
+      color: #666;
+      font-size: 15px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #333;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 15px;
+      transition: all 0.3s;
+      font-family: inherit;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: #999;
+    }
+
+    .form-group small {
+      display: block;
+      margin-top: 5px;
+      font-size: 12px;
+      color: #666;
+    }
+
+    /* Força da senha */
+    .password-strength {
+      height: 4px;
+      margin-top: 8px;
+      border-radius: 2px;
+      background: #e0e0e0;
+      overflow: hidden;
+    }
+
+    .password-strength-bar {
+      height: 100%;
+      width: 0;
+      transition: width 0.3s, background 0.3s;
+      border-radius: 2px;
+    }
+
+    .password-strength-bar.weak {
+      width: 33%;
+      background: #f44336;
+    }
+
+    .password-strength-bar.medium {
+      width: 66%;
+      background: #ff9800;
+    }
+
+    .password-strength-bar.strong {
+      width: 100%;
+      background: #4caf50;
+    }
+
+    .password-hint {
+      font-size: 12px;
+      margin-top: 5px;
+      font-weight: 500;
+    }
+
+    /* Checkbox termos */
+    .checkbox-group {
+      display: flex;
+      align-items: flex-start;
+      margin: 20px 0;
+      gap: 10px;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      margin-top: 3px;
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: #667eea;
+    }
+
+    .checkbox-group label {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.5;
+      cursor: pointer;
+    }
+
+    .checkbox-group a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .checkbox-group a:hover {
+      text-decoration: underline;
+    }
+
+    /* Botão */
+    .btn-cadastro {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-cadastro:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+    }
+
+    .btn-cadastro:active {
+      transform: translateY(0);
+    }
+
+    .cadastro-footer {
+      text-align: center;
+      margin-top: 25px;
+      padding-top: 25px;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    .cadastro-footer p {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    .cadastro-footer a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .cadastro-footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsivo */
+    @media (max-width: 500px) {
+      .cadastro-container {
+        padding: 30px 25px;
+        max-width: 95%;
+      }
+
+      .cadastro-header h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="cadastro-container">
+    <div class="cadastro-header">
+      <h1>✨ Cadastrar Empresa</h1>
+      <p>Anuncie seus serviços no LocService</p>
+    </div>
+    
+    <form id="formCadastro">
+      <!-- Nome da Empresa -->
+      <div class="form-group">
+        <label for="nome">Nome da Empresa *</label>
+        <input 
+          type="text" 
+          id="nome" 
+          name="nome" 
+          placeholder="Ex: Jardins & Cia"
+          required
+          minlength="3"
+        >
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email">E-mail *</label>
+        <input 
+          type="email" 
+          id="email" 
+          name="email" 
+          placeholder="contato@empresa.com"
+          required
+        >
+      </div>
+
+      <!-- Senha -->
+      <div class="form-group">
+        <label for="senha">Senha *</label>
+        <input 
+          type="password" 
+          id="senha" 
+          name="senha" 
+          placeholder="Mínimo 6 caracteres"
+          required
+          minlength="6"
+        >
+        <div class="password-strength">
+          <div class="password-strength-bar" id="strengthBar"></div>
+        </div>
+        <p class="password-hint" id="strengthText"></p>
+      </div>
+
+      <!-- Confirmar Senha -->
+      <div class="form-group">
+        <label for="confirmarSenha">Confirmar Senha *</label>
+        <input 
+          type="password" 
+          id="confirmarSenha" 
+          name="confirmarSenha" 
+          placeholder="Digite a senha novamente"
+          required
+          minlength="6"
+        >
+      </div>
+
+      <!-- CATEGORIA -->
+      <div class="form-group">
+        <label for="categoria">Categoria *</label>
+        <select id="categoria" name="categoria" required>
+          <option value="">Selecione uma categoria</option>
+          <option value="Jardinagem">🌿 Jardinagem</option>
+          <option value="Limpeza">🧹 Limpeza</option>
+          <option value="Manutenção">🔧 Manutenção</option>
+          <option value="Pet Care">🐾 Pet Care</option>
+          <option value="Academia">💪 Academia</option>
+          <option value="Tecnologia">💻 Tecnologia</option>
+          <option value="Padaria">🍞 Padaria</option>
+          <option value="Entregas">📦 Entregas</option>
+          <option value="Outro">Outro</option>
+        </select>
+      </div>
+
+      <!-- DESCRIÇÃO -->
+      <div class="form-group">
+        <label for="descricao">Descrição dos Serviços *</label>
+        <textarea 
+          id="descricao" 
+          name="descricao" 
+          placeholder="Descreva os serviços oferecidos pela sua empresa..."
+          required
+          minlength="20"
+        ></textarea>
+        <small>Mínimo 20 caracteres</small>
+      </div>
+
+      <!-- WHATSAPP -->
+      <div class="form-group">
+        <label for="whatsapp">WhatsApp *</label>
+        <input 
+          type="tel" 
+          id="whatsapp" 
+          name="whatsapp" 
+          placeholder="(84) 99999-9999"
+          required
+        >
+        <small>Formato: (84) 99999-9999</small>
+      </div>
+
+      <!-- Termos -->
+      <div class="checkbox-group">
+        <input type="checkbox" id="termos" required>
+        <label for="termos">
+          Aceito os <a href="#" target="_blank">Termos de Uso</a> e 
+          <a href="#" target="_blank">Política de Privacidade</a>
+        </label>
+      </div>
+
+      <button type="submit" class="btn-cadastro">
+        Cadastrar Empresa
+      </button>
+    </form>
+
+    <div class="cadastro-footer">
+      <p>Já tem uma conta? <a href="login.html">Fazer login</a></p>
+      <p><a href="index.html">← Voltar para a página inicial</a></p>
+    </div>
+  </div>
+
+  <script>
+    // Validação de força da senha
+    const senhaInput = document.getElementById('senha');
+    const strengthBar = document.getElementById('strengthBar');
+    const strengthText = document.getElementById('strengthText');
+
+    senhaInput.addEventListener('input', function() {
+      const senha = this.value;
+      
+      if (senha.length === 0) {
+        strengthBar.className = 'password-strength-bar';
+        strengthText.textContent = '';
+        return;
+      }
+      
+      let strength = 0;
+      
+      if (senha.length >= 6) strength++;
+      if (senha.length >= 10) strength++;
+      if (/[a-z]/.test(senha) && /[A-Z]/.test(senha)) strength++;
+      if (/\d/.test(senha)) strength++;
+      if (/[^a-zA-Z0-9]/.test(senha)) strength++;
+
+      strengthBar.className = 'password-strength-bar';
+      
+      if (strength <= 2) {
+        strengthBar.classList.add('weak');
+        strengthText.textContent = '🔴 Senha fraca';
+        strengthText.style.color = '#f44336';
+      } else if (strength <= 4) {
+        strengthBar.classList.add('medium');
+        strengthText.textContent = '🟡 Senha média';
+        strengthText.style.color = '#ff9800';
+      } else {
+        strengthBar.classList.add('strong');
+        strengthText.textContent = '🟢 Senha forte';
+        strengthText.style.color = '#4caf50';
+      }
+    });
+
+    // Máscara para WhatsApp
+    document.getElementById('whatsapp').addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\D/g, '');
+      
+      if (value.length <= 11) {
+        value = value.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3');
+      }
+      
+      e.target.value = value;
+    });
+
+    // Formulário de cadastro
+    const formCadastro = document.getElementById('formCadastro');
+    
+    formCadastro.addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      const nome = document.getElementById('nome').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const senha = document.getElementById('senha').value;
+      const confirmarSenha = document.getElementById('confirmarSenha').value;
+      const categoria = document.getElementById('categoria').value;
+      const descricao = document.getElementById('descricao').value.trim();
+      const whatsapp = document.getElementById('whatsapp').value.trim();
+      const termos = document.getElementById('termos').checked;
+
+      // Validações
+      if (!nome || nome.length < 3) {
+        alert('❌ Nome deve ter pelo menos 3 caracteres.');
+        return;
+      }
+
+      if (!email.includes('@')) {
+        alert('❌ E-mail inválido.');
+        return;
+      }
+
+      if (senha.length < 6) {
+        alert('❌ A senha deve ter no mínimo 6 caracteres.');
+        return;
+      }
+
+      if (senha !== confirmarSenha) {
+        alert('❌ As senhas não coincidem!');
+        return;
+      }
+
+      if (!categoria) {
+        alert('❌ Selecione uma categoria.');
+        return;
+      }
+
+      if (!descricao || descricao.length < 20) {
+        alert('❌ Descrição deve ter no mínimo 20 caracteres.');
+        return;
+      }
+
+      if (!whatsapp) {
+        alert('❌ WhatsApp é obrigatório.');
+        return;
+      }
+
+      if (!termos) {
+        alert('❌ Você precisa aceitar os Termos de Uso.');
+        return;
+      }
+
+      // Chama função de registro
+      fazerCadastro(nome, email, senha, categoria, descricao, whatsapp);
+    });
+
+    // Função de cadastro usando API
+    async function fazerCadastro(nome, email, senha, categoria, descricao, whatsapp) {
+      try {
+        console.log('📝 Tentando cadastro via API...');
+        
+        const response = await fetch('http://localhost:3000/api/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ 
+            nome, 
+            email, 
+            senha, 
+            categoria, 
+            descricao, 
+            whatsapp 
+          })
+        });
+
+        console.log('📡 Resposta recebida:', response.status);
+
+        const data = await response.json();
+        console.log('📦 Dados:', data);
+
+        if (data.success) {
+          // Salva token e dados do usuário
+          localStorage.setItem('token', data.data.token);
+          localStorage.setItem('usuarioLogado', data.data.usuario.nome);
+          localStorage.setItem('emailLogado', data.data.usuario.email);
+          localStorage.setItem('isAdmin', data.data.usuario.isAdmin ? 'true' : 'false');
+          
+          alert('✅ Cadastro realizado com sucesso!\n\nVocê será redirecionado para a página inicial.');
+          window.location.href = 'index.html';
+        } else {
+          alert('❌ ' + (data.message || 'Erro ao fazer cadastro'));
+        }
+      } catch (error) {
+        console.error('❌ Erro ao conectar:', error);
+        alert('❌ Erro ao conectar com o servidor!\n\nVerifique se o backend está rodando.');
+      }
+    }
+  </script>
+</body>
+</html>
